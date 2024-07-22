@@ -41,4 +41,18 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Invalid email or password'], 401);
     }
+
+    public function checkCredentials(Request $request)
+    {
+        $payload = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($payload)) {
+            return response()->json(['status' => 200, 'message' => 'successfully logged in']);
+        }
+
+        return response()->json(['message' => 'Invalid email or password'], 401);
+    }
 }
