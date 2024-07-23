@@ -55,4 +55,15 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Invalid email or password'], 401);
     }
+
+    public function logout(Request $request)
+    {
+        try {
+            $request->user()->currentAccessToken()->delete();
+            return response()->json(['status' => 200, 'message' => 'successfully logged out']);
+        } catch (\Exception $th) {
+            Log::info('Logout error: ' . $th->getMessage());
+            return response()->json(['message' => 'Something went wrong try again later'], 500);
+        }
+    }
 }
